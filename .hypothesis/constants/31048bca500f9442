@@ -1,0 +1,4 @@
+# file: /home/alexw/projects/vector-math-pytest/conftest.py
+# hypothesis_version: 6.148.6
+
+[3.0, 4.0, 'config.json', 'function', 'markers', 'session', '{"mode": "test"}']

@@ -1,0 +1,21 @@
+flowchart LR
+  subgraph lib [Library]
+    MATH[Math Module<br/>vector_math.math]
+  end
+
+  subgraph tests [Tests]
+    BASIC[test_basic.py]
+    PARAM[test_param.py]
+    ERR[test_errors.py]
+    PROP[test_property.py]
+    BENCH[test_benchmark.py]
+    CONFTST[conftest.py]
+  end
+
+  MATH --> BASIC
+  MATH --> PARAM
+  MATH --> ERR
+  MATH --> PROP
+  MATH --> BENCH
+  CONFTST --> tests
+

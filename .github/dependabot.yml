@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"     # Location of requirements.txt
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    # Optionally restrict to certain labels / reviewers
+    # labels: ["dependencies", "automated"]
+

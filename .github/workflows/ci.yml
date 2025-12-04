@@ -1,0 +1,94 @@
+name: CI
+
+# Run on push to any branch and on PRs
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+  packages: read
+  actions: write
+
+jobs:
+  test:
+    name: Test (pytest + coverage + benchmarks)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Create virtualenv and upgrade packaging tools
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip setuptools wheel
+
+      - name: Install dependencies (fast)
+        run: |
+          source .venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Run tests (pytest) with coverage and benchmark JSON
+        env:
+          CI: true
+        run: |
+          source .venv/bin/activate
+          # produce junit XML for test result UI and bench.json for artifact upload
+          pytest --maxfail=1 --disable-warnings -q --junitxml=results.xml --benchmark-json=bench.json
+
+      - name: Upload pytest junit xml
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: results.xml
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results-${{ matrix.python-version }}
+          path: bench.json
+
+      - name: Save htmlcov (coverage HTML) as artifact
+        if: always()
+        run: |
+          source .venv/bin/activate
+          # generate HTML report if not already present
+          pytest --maxfail=1 --disable-warnings -q --cov=vector_math --cov-report=html || true
+        continue-on-error: true
+
+      - name: Upload coverage HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html-${{ matrix.python-version }}
+          path: htmlcov
+
+  # Optional lint job (fast), uncomment / enable when you add ruff/black to requirements
+  # lint:
+  #   name: Lint (ruff)
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-python@v4
+  #       with:
+  #         python-version: 3.12
+  #     - name: Install ruff
+  #       run: pip install ruff
+  #     - name: Run ruff
+  #       run: ruff check .
+
+

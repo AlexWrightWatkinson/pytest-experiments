@@ -1,0 +1,4 @@
+# file: /home/alexw/projects/vector-math-pytest/vector_math/__init__.py
+# hypothesis_version: 6.148.6
+
+['add', 'batch_normalize', 'dot', 'normalize', 'scalar_multiply']

@@ -1,0 +1,7 @@
+# Code owners for CI and test infra
+# GitHub will request reviews from these owners for PRs that touch these paths.
+.github/workflows/*  @AlexWrightWatkinson
+requirements.txt     @AlexWrightWatkinson
+pyproject.toml       @AlexWrightWatkinson
+README.md            @AlexWrightWatkinson
+
