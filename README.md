@@ -12,8 +12,6 @@ Small, well-structured Python project designed to teach **pytest** thoroughly th
 
 This project implements a tiny `vector_math` module (vector addition, dot product, scalar multiply, normalization, batch normalization) and a **rich pytest suite** demonstrating essentials through advanced testing techniques: parametrization, fixtures, mocking, monkeypatching, property-based testing (Hypothesis), benchmarking (pytest-benchmark), custom markers, coverage enforcement, and CI integration.
 
-The repository is intentionally compact and realistic — suitable to present to recruiters, interviewers, or teammates to showcase testing craftsmanship.
-
 ---
 
 ## Why pytest?
